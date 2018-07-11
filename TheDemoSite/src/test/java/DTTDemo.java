@@ -1,6 +1,7 @@
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import javafx.scene.control.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -37,14 +38,13 @@ public class DTTDemo {
 
         @Before
 
-        public void setup() {
-
-            System.setProperty("webdriver.chrome.driver", "C:/Development/web_driver/chromedriver.exe");
-            driver = new ChromeDriver();
-            report = new ExtentReports("C:\\Users\\Admin\\Desktop\\AutomationReports\\DemoTestDTT.html", true);
-            test =  report.startTest("Testing");
+        public void setup() throws Exception {
+                ExcelUtils.setExcelFile(Constant.Path_ExcelData + Constant.File_ExcelData, 0);
+                System.setProperty("webdriver.chrome.driver", "C:/Development/web_driver/chromedriver.exe");
+                driver = new ChromeDriver();
+                report = new ExtentReports("C:\\Users\\Admin\\Desktop\\AutomationReports\\DemoTestDTT.html", true);
+                test =  report.startTest("Testing");
         }
-
 
         @Test
          public void dttExcelTest() {
@@ -62,15 +62,11 @@ public class DTTDemo {
             //XSSFCell cell = sheet.getRow(0).getCell(0);
 
             //get values for each cell and pass as string
-            for (int i = 0; i < sheet.getPhysicalNumberOfRows(); i++){
+            for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++){
                 XSSFCell username = sheet.getRow(i).getCell(0);
                 XSSFCell password = sheet.getRow(i).getCell(1);
-                XSSFCell result = sheet.getRow(i).getCell(2);
                 String user = username.getStringCellValue();
                	String pass = password.getStringCellValue();
-               	String res = result.toString();
-
-
 
                 driver.get("http://thedemosite.co.uk/");
                 test.log(LogStatus.INFO, "Website Accessed!");
@@ -90,12 +86,21 @@ public class DTTDemo {
                 page2.logIn(user,pass);
                 System.out.println("login1");
                 test.log(LogStatus.PASS, "login success");
-                res = "Success";
+
 
                 String title = driver.getTitle();
                 System.out.println(title);
                 String expected = "Login example page to test the PHP MySQL online system";
-                test.log(LogStatus.PASS, "Successfully created a user and logged in with it");
+
+                if (title.equals(expected)) {
+                    test.log(LogStatus.PASS, "Successfully verified  Title of the page!!");
+                    ExcelUtils.setCellData("Pass", i, 2);
+                }
+                else {
+                    test.log(LogStatus.FAIL, "Failed to verify Title of the page");
+                    ExcelUtils.setCellData("Fail", i, 2);
+                }
+
                 assertEquals(expected, title);
 
 

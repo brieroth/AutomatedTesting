@@ -11,5 +11,4 @@ public class HomePage {
         addUserButton.click();
     }
 
-
 }
