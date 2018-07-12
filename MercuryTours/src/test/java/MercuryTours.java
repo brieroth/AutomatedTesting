@@ -46,10 +46,10 @@ public class MercuryTours {
         page.register();
         test.log(LogStatus.INFO, "Navigate to Register page!");
         Register page1 = PageFactory.initElements(driver, Register.class);
-        page1.fillForm("john","tom","123456789","tom@qa.com","35fsfdgg","london,","uk","L1 5TS","UK","tom123","123456","123456");
+        page1.fillForm("john","tom","123456789","tom@qa.com","35fsfdgg","london,","uk","L1 5TS","UK","tommy","pass","123456");
         test.log(LogStatus.INFO, "Register complete");
         test.log(LogStatus.INFO, "Login");
-        page.signIn("tom123","123456");
+        page.signIn("tommy","pass");
         test.log(LogStatus.INFO, "Login Complete");
 
 
