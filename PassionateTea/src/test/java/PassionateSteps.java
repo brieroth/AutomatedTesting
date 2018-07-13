@@ -2,6 +2,9 @@
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -19,12 +22,16 @@ public class PassionateSteps {
     WebElement element;
     WebDriver driver;
     String url;
+    ExtentTest test;
+    ExtentReports report;
 
     @Before
     public void setup() {
         System.setProperty("webdriver.chrome.driver", "C:/Development/web_driver/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
+        report = new ExtentReports("C:\\Users\\Admin\\Desktop\\AutomationReports\\PassionateTeaBDD.html", true);
+        test =  report.startTest("PassionateTea");
     }
 
 
@@ -38,6 +45,7 @@ public class PassionateSteps {
         // Write code here that turns the phrase above into concrete actions
         HomePage page = PageFactory.initElements(driver, HomePage.class);
         page.menuB();
+        test.log(LogStatus.INFO, "Website Accessed!");
     }
 
     @Then("^I can browse a list of the available products\\.$")
@@ -63,7 +71,7 @@ public class PassionateSteps {
         CheckOut page2 = PageFactory.initElements(driver, CheckOut.class);
         page2.fillForm("lana@aol.com", "Lana Rey", "23 MoreLane", "Visa", "2345089372", "Miss Lana Rey", "234");
 //        assertTrue(!url.equals(driver.getCurrentUrl()));
-        //assertEquals("Pay with Credit Card or Log In", driver.findElement(By.xpath(Constant.checkOutURL)).getText());
+        assertEquals("Pay with Credit Card or Log In", driver.findElement(By.xpath("//*[@id=\"wsb-nav-00000000-0000-0000-0000-000450914915\"]/ul/li[3]/a")).getText());
 
     }
 
