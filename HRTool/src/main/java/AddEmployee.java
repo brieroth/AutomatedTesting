@@ -4,7 +4,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class AddEmployee {
 
-    @FindBy (id="firstName")
+    @FindBy (xpath = "//*[@id=\"firstName\"]")
      private WebElement firstName;
 
     @FindBy (xpath= "//*[@id=\"middleName\"]")
@@ -16,8 +16,9 @@ public class AddEmployee {
     @FindBy (xpath= "//*[@id=\"employeeId\"]")
     private WebElement employeeId;
 
-    @FindBy (xpath ="//ul[@id='select-options-7d12e654-06f2-909f-2554-887143ad2955']/li[3]/span")
-      private WebElement location;
+    @FindBy (xpath ="//*[@id=\"location_inputfileddiv\"]/div/input")
+    private WebElement location;
+
 
     @FindBy (xpath = "//form[@id='pimAddEmployeeForm']/div/div/materializecss-decorator[3]/div/sf-decorator/div/label")
     private WebElement createUser;
@@ -41,15 +42,19 @@ public class AddEmployee {
 
     private WebElement saveButton;
 
-    public void fillForm (String name, String middle, String last, String id, String loc){
+    public void fillForm (String name, String middle, String last, String id) {
         firstName.sendKeys(name);
         middleName.sendKeys(middle);
         lastName.sendKeys(last);
         employeeId.sendKeys(id);
-        location.sendKeys(Keys.TAB);
-        location.sendKeys(loc);
+        location.click();
+        location.sendKeys(Keys.chord("l"));
+        location.sendKeys(Keys.ENTER);
 
-     }
+
+    }
+
+
 
      public void logDetails( ){
         createUser.click();

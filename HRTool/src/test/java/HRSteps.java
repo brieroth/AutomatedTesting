@@ -68,8 +68,6 @@ public class HRSteps {
 
     @When("^then the Add Employee Tab$")
     public void then_the_Add_Employee_Tab() throws InterruptedException {
-//        Homepage page2 = PageFactory.initElements(driver, Homepage.class);
-//        page2.addEmp();
         Actions action = new Actions(driver);
         action.moveByOffset(100, 100).perform();
         driver.findElement(By.xpath("//*[@id=\"menu_pim_addEmployee\"]/span[2]")).click();
@@ -83,9 +81,9 @@ public class HRSteps {
         driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         driver.get(Constant.empURL);
         WebElement popup= driver.findElement(By.xpath("//*[@id=\"pimAddEmployeeForm\"]/div[1]/div"));
-        emp.fillForm("Peter", "Tom", "Rey", "0458", "Australian Regional HQ");
+        emp.fillForm("Oscar", "Oliver", "Rey", "07678");
         Thread.sleep(1000);
-         test.log(LogStatus.INFO, "Add Employee fill formed");
+        test.log(LogStatus.INFO, "Add Employee fill formed");
     }
 
     @When("^I choose to create Login Details by clicking the appropriate button$")
@@ -98,7 +96,7 @@ public class HRSteps {
     @When("^I fill out the Login Details correctly$")
     public void i_fill_out_the_Login_Details_correctly()  {
         AddEmployee emp2 = PageFactory.initElements(driver, AddEmployee.class);
-        emp2.createLogDetails("rey987", "12345678", "12345678","Enabled", "Default ESS", "Default Supervisor","Asset Manager" );
+        emp2.createLogDetails("otiskev867", "12345678", "12345678","Enabled", "Default ESS", "Default Supervisor","Asset Manager" );
     }
 
     @When("^I click the Save button$")
@@ -112,30 +110,26 @@ public class HRSteps {
     @Then("^I can search for the Employee I have just created$")
     public void i_can_search_for_the_Employee_I_have_just_created() throws InterruptedException {
         SearchEmployee srch = PageFactory.initElements(driver, SearchEmployee.class);
-        srch.searchEmp("Peter Rey");
-        test.log(LogStatus.INFO, "Employee searched and found");
-        Thread.sleep(4000);
-    }
+        srch.searchEmp("07678");
+        test.log(LogStatus.PASS, "Employee searched and found");
+          }
 
     @Then("^select them for inspection$")
     public void select_them_for_inspection() {
         SearchEmployee srch2 = PageFactory.initElements(driver, SearchEmployee.class);
-        srch2.findE();
+        //srch2.findE();
         test.log(LogStatus.INFO, "Commence Inspection");
 
-        String title = driver.getTitle();
-        System.out.println(title);
-        String expected =  "Personal Details";
-        if (title.equals(expected)) {
+        String url = driver.getCurrentUrl();
+        System.out.println(url);
+        String expected = Constant.empURL;
+        if (url.equals(expected)) {
             test.log(LogStatus.PASS, "Inspection Success!");
         }
         else {
             test.log(LogStatus.FAIL, "Inspection Failed!");
         }
         assertEquals("Personal Details", driver.findElement(By.xpath("//*[@id=\"personal_details_tab\"]/h4")).getText());
-
-
-
 
 
     }
